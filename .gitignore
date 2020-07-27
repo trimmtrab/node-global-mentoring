@@ -1,1 +1,3 @@
+*.result.*
+dist
 node_modules
