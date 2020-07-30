@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "task1": "nodemon task1",
-    "task2": "nodemon task2",
-    "task2:es6": "nodemon --exec \"npm run task2:es6:build && node ./dist/task2.es6.js\"",
-    "task2:es6:build": "babel task2.es6.js -d dist"
+    "task1": "nodemon src/task1",
+    "task2": "nodemon src/task2",
+    "task2:es6": "nodemon --exec babel-node src/task2.es6"
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,7 @@
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
+    "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "nodemon": "^2.0.4"
   },
