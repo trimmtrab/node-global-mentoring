@@ -1,6 +1,9 @@
 import { Op } from 'sequelize';
 import uuid = require('uuid');
-import { User, UserType } from '../models/users';
+import models from '../models';
+import { UserType } from '../models/users';
+
+const { User } = models;
 
 class UserServiceClass {
     private readonly UPDATE_PROPERTIES = ['age', 'login', 'password']
