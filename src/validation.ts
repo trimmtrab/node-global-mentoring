@@ -1,4 +1,5 @@
-import Joi = require('joi');
+import Joi from 'joi';
+// eslint-disable-next-line no-unused-vars
 import { RequestHandler } from 'express';
 
 const schema = Joi.object({
@@ -28,6 +29,7 @@ const validateUser: RequestHandler = (req, res, next) => {
         res.status(400).json(errorResponse(error.details));
     } else {
         next();
+        return;
     }
 };
 
