@@ -1,4 +1,4 @@
-const mockUsers = [
+export const mockUsers = [
     {
         id: 'c7494d91-4201-4ceb-86c5-6e7a828df742',
         login: 'test1',
@@ -28,7 +28,3 @@ const mockUsers = [
         isDeleted: false
     }
 ];
-
-module.exports = mockUsers;
-
-export { };

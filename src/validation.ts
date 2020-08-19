@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi = require('joi');
 import { RequestHandler } from 'express';
 
 const schema = Joi.object({
@@ -19,7 +19,7 @@ const errorResponse = (schemaErrors: Joi.ValidationErrorItem[]) => {
     };
 };
 
-const validateUser: RequestHandler = (req, res, next) => {
+export const validateUser: RequestHandler = (req, res, next) => {
     const { error } = schema.validate(req.body, {
         abortEarly: false
     });
@@ -31,5 +31,3 @@ const validateUser: RequestHandler = (req, res, next) => {
         return;
     }
 };
-
-module.exports = validateUser;

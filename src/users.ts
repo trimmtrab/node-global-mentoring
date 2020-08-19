@@ -1,4 +1,4 @@
-const mockUsers = require('./mock');
+import { mockUsers } from './mock';
 
 type User = {
   id: string;
@@ -8,18 +8,12 @@ type User = {
   isDeleted: boolean;
 }
 
-const createUserToSend = (user: User) => ({
+export const createUserToSend = (user: User) => ({
     id: user.id,
     login: user.login,
     age: user.age
 });
 
-const users: User[] = mockUsers;
+export const users: User[] = mockUsers;
 
-const findUser = (id: User['id']) => users.find(user => !user.isDeleted && user.id === id);
-
-module.exports = {
-    createUserToSend,
-    findUser,
-    users
-};
+export const findUser = (id: User['id']) => users.find(user => !user.isDeleted && user.id === id);

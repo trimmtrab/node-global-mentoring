@@ -1,8 +1,8 @@
-import express from 'express';
-import validator from 'validator';
-import { v4 as uuidv4 } from 'uuid';
-const validateUser = require('./validation');
-const { createUserToSend, findUser, users } = require('./users');
+import express = require('express');
+import validator = require('validator');
+import uuid = require('uuid');
+import { createUserToSend, findUser, users } from './users';
+import { validateUser } from './validation';
 
 const app = express();
 
@@ -61,12 +61,12 @@ userRouter.route('/:id')
 userRouter.route('/')
     .get((req, res) => {
         const { limit = Infinity, login = '' } = req.query;
-        const isLimitValid = typeof limit === 'string' && validator.isInt(limit, { min: 1 });
+        const isLimitValid = typeof limit === 'string' && validator.default.isInt(limit, { min: 1 });
         const isLoginValid = typeof login === 'string';
 
         if (isLimitValid && isLoginValid) {
             const usersToSend = users
-                .filter(user => !user.isDeleted && user.login.includes(login))
+                .filter(user => !user.isDeleted && user.login.includes(login as string))
                 .sort(({ login: loginA }, { login: loginB }) => {
                     if (loginA < loginB) {
                         return -1;
@@ -89,7 +89,7 @@ userRouter.route('/')
 
         if (!userWithSameLoginExists) {
             const newUser = {
-                id: uuidv4(),
+                id: uuid.v4(),
                 login,
                 password,
                 age,
