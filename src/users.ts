@@ -1,6 +1,5 @@
 const mockUsers = require('./mock');
 
-/* eslint-disable no-undef */
 type User = {
   id: string;
   login: string;
@@ -8,7 +7,6 @@ type User = {
   age: number;
   isDeleted: boolean;
 }
-/* eslint-enable no-undef */
 
 const createUserToSend = (user: User) => ({
     id: user.id,

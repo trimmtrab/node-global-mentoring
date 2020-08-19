@@ -1,5 +1,4 @@
 import Joi from 'joi';
-// eslint-disable-next-line no-unused-vars
 import { RequestHandler } from 'express';
 
 const schema = Joi.object({
