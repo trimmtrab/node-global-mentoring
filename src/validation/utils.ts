@@ -1,12 +1,6 @@
 import Joi = require('joi');
 import { RequestHandler } from 'express';
 
-const schema = Joi.object({
-    age: Joi.number().min(4).max(130).required(),
-    login: Joi.string().required(),
-    password: Joi.string().alphanum().pattern(/[A-Za-z]/).pattern(/\d/).required()
-});
-
 const errorResponse = (schemaErrors: Joi.ValidationErrorItem[]) => {
     const errors = schemaErrors.map(({ path, message }) => ({
         path,
@@ -19,8 +13,11 @@ const errorResponse = (schemaErrors: Joi.ValidationErrorItem[]) => {
     };
 };
 
-export const validateUser: RequestHandler = (req, res, next) => {
-    const { error } = schema.validate(req.body, {
+type ValidationSource = 'body' | 'query';
+
+export const validateSchema = (schema: Joi.ObjectSchema, source: ValidationSource = 'body'): RequestHandler => (req, res, next) => {
+    const data = source === 'body' ? req.body : req.query;
+    const { error } = schema.validate(data, {
         abortEarly: false
     });
 
