@@ -54,22 +54,23 @@ class UserServiceClass {
     async delete(id: UserType['id']) {
         const user = await this.findActiveById(id);
 
-        if (user) {
-            user.isDeleted = true;
-            await user.save();
-
-            return true;
+        if (!user) {
+            return false;
         }
-        return false;
+
+        user.isDeleted = true;
+        await user.save();
+
+        return true;
     }
 
     private async findActiveById(id: UserType['id']) {
-        return await User.findOne({
-            where: {
-                id,
-                isDeleted: false
-            }
-        });
+        const user = await User.findByPk(id);
+
+        if (!user || user.isDeleted) {
+            return null;
+        }
+        return user;
     }
 
     async get(id: UserType['id']) {
@@ -85,7 +86,7 @@ class UserServiceClass {
 
         if (user) {
             this.UPDATE_PROPERTIES.forEach(prop => {
-                if (updateProps[prop]) {
+                if (updateProps[prop] !== undefined) {
                     user[prop] = updateProps[prop];
                 }
             });

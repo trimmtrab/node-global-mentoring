@@ -1,4 +1,4 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../initDB';
 
 export type UserType = {
@@ -9,7 +9,7 @@ export type UserType = {
   isDeleted: boolean;
 }
 
-interface UserCreationAttributes extends Optional<UserType, 'id'> {}
+type UserCreationAttributes = UserType;
 
 interface UserInstance
   extends Model<UserType, UserCreationAttributes>,
@@ -18,7 +18,7 @@ interface UserInstance
 export const User = sequelize.define<UserInstance>('users', {
     id: {
         primaryKey: true,
-        type: DataTypes.TEXT
+        type: DataTypes.UUIDV4
     },
     login: DataTypes.TEXT,
     password: DataTypes.TEXT,

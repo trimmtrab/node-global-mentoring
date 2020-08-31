@@ -7,8 +7,9 @@ export const userRouter = express.Router();
 userRouter.route('/:id')
     .delete(async (req, res) => {
         const { id } = req.params;
+        const isUserDeleted = await UserService.delete(id);
 
-        if (await UserService.delete(id)) {
+        if (isUserDeleted) {
             res.end();
         } else {
             res.sendStatus(404);
@@ -43,11 +44,7 @@ userRouter.route('/')
             login as string
         );
 
-        if (users) {
-            res.send(users).end();
-        } else {
-            res.sendStatus(400);
-        }
+        res.send(users).end();
     })
     .post(validateUser, async (req, res) => {
         const newUserId = await UserService.create(req.body);
