@@ -1,10 +1,8 @@
-import { Group } from './groups';
-import { User } from './users';
+import { Group as GroupModel } from './groups';
+import { User as UserModel } from './users';
 
-User.belongsToMany(Group, { through: 'UserGroup' });
-Group.belongsToMany(User, { through: 'UserGroup' });
+UserModel.belongsToMany(GroupModel, { through: 'UserGroup' });
+GroupModel.belongsToMany(UserModel, { through: 'UserGroup' });
 
-export default {
-    Group,
-    User
-};
+export const Group = GroupModel;
+export const User = UserModel;

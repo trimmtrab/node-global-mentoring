@@ -1,16 +1,19 @@
 import uuid = require('uuid');
-import models  from '../models';
+import { Group } from '../models';
 import { GroupType } from '../models/groups';
 import { UserType } from '../models/users';
 import { sequelize } from '../initDB';
-
-const { Group } = models;
 
 class GroupServiceClass {
     private readonly UPDATE_PROPERTIES = ['name', 'permissions'];
 
     async addUsersToGroup(groupId: GroupType['id'], userIds: UserType['id'][]) {
         const group = await Group.findByPk(groupId);
+
+        if (!group) {
+            return false;
+        }
+
         const t = await sequelize.transaction();
 
         try {
@@ -28,35 +31,39 @@ class GroupServiceClass {
             where: { name }
         });
 
-        if (!groupWithSameNameExists) {
-            const newGroup = Group.build({
-                id: uuid.v4(),
-                name,
-                permissions
-            });
-
-            await newGroup.save();
-            return newGroup.id;
+        if (groupWithSameNameExists) {
+            return;
         }
+
+        const newGroup = Group.build({
+            id: uuid.v4(),
+            name,
+            permissions
+        });
+
+        await newGroup.save();
+        return newGroup.id;
     }
 
     async delete(id: GroupType['id']) {
         const group = await Group.findByPk(id);
 
-        if (group) {
-            await group.destroy();
-
-            return true;
+        if (!group) {
+            return false;
         }
-        return false;
+
+        await group.destroy();
+        return true;
     }
 
     async get(id: GroupType['id']) {
         const group = await Group.findByPk(id);
 
-        if (group) {
-            return group;
+        if (!group) {
+            return;
         }
+
+        return group;
     }
 
     async getAll() {
@@ -68,16 +75,18 @@ class GroupServiceClass {
     async update(id: GroupType['id'], updateProps: Omit<GroupType, 'id'>) {
         const group = await Group.findByPk(id);
 
-        if (group) {
-            this.UPDATE_PROPERTIES.forEach(prop => {
-                if (updateProps[prop] !== undefined) {
-                    group[prop] = updateProps[prop];
-                }
-            });
-
-            await group.save();
-            return group;
+        if (!group) {
+            return;
         }
+
+        this.UPDATE_PROPERTIES.forEach(prop => {
+            if (updateProps[prop] !== undefined) {
+                group[prop] = updateProps[prop];
+            }
+        });
+
+        await group.save();
+        return group;
     }
 }
 

@@ -25,7 +25,7 @@ export const Group = sequelize.define<GroupInstance>('groups', {
         type: DataTypes.UUID
     },
     name: DataTypes.TEXT,
-    permissions: DataTypes.ARRAY(DataTypes.TEXT)
+    permissions: DataTypes.ARRAY(DataTypes.ENUM(...GroupPermissions))
 }, {
     timestamps: false
 });
