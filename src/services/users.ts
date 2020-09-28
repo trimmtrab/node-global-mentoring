@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import uuid = require('uuid');
-import { User, UserType } from '../models/users';
+import { User } from '../models';
+import { UserType } from '../models/users';
 
 class UserServiceClass {
     private readonly UPDATE_PROPERTIES = ['age', 'login', 'password']
@@ -29,18 +30,20 @@ class UserServiceClass {
             where: { isDeleted: false, login }
         });
 
-        if (!userWithSameLoginExists) {
-            const newUser = User.build({
-                id: uuid.v4(),
-                login,
-                password,
-                age,
-                isDeleted: false
-            });
-
-            await newUser.save();
-            return newUser.id;
+        if (userWithSameLoginExists) {
+            return;
         }
+
+        const newUser = User.build({
+            id: uuid.v4(),
+            login,
+            password,
+            age,
+            isDeleted: false
+        });
+
+        await newUser.save();
+        return newUser.id;
     }
 
     private createUserToSend(user: UserType) {
@@ -76,24 +79,28 @@ class UserServiceClass {
     async get(id: UserType['id']) {
         const user = await this.findActiveById(id);
 
-        if (user) {
-            return this.createUserToSend(user);
+        if (!user) {
+            return;
         }
+
+        return this.createUserToSend(user);
     }
 
     async update(id: UserType['id'], updateProps: Pick<UserType, 'age' | 'login' | 'password'>) {
         const user = await this.findActiveById(id);
 
-        if (user) {
-            this.UPDATE_PROPERTIES.forEach(prop => {
-                if (updateProps[prop] !== undefined) {
-                    user[prop] = updateProps[prop];
-                }
-            });
-
-            await user.save();
-            return this.createUserToSend(user);
+        if (!user) {
+            return;
         }
+
+        this.UPDATE_PROPERTIES.forEach(prop => {
+            if (updateProps[prop] !== undefined) {
+                user[prop] = updateProps[prop];
+            }
+        });
+
+        await user.save();
+        return this.createUserToSend(user);
     }
 }
 

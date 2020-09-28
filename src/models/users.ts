@@ -18,7 +18,7 @@ interface UserInstance
 export const User = sequelize.define<UserInstance>('users', {
     id: {
         primaryKey: true,
-        type: DataTypes.UUIDV4
+        type: DataTypes.UUID
     },
     login: DataTypes.TEXT,
     password: DataTypes.TEXT,

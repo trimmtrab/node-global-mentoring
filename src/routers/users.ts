@@ -25,7 +25,7 @@ userRouter.route('/:id')
             res.sendStatus(404);
         }
     })
-    .patch(validateUser, async (req, res) => {
+    .put(validateUser, async (req, res) => {
         const { id } = req.params;
         const user = await UserService.update(id, req.body);
 
