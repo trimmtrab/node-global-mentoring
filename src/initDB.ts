@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize';
+import { config } from '../config';
 
-export const sequelize = new Sequelize(process.env.DB_NAME, 'postgres', process.env.DB_PASSWORD, {
+export const sequelize = new Sequelize(config.dbName, 'postgres', config.dbPassword, {
     host: 'localhost',
     dialect: 'postgres',
     logging: false
@@ -15,4 +16,3 @@ export const initDB = async () => {
         console.error('Unable to connect to the database:', error);
     }
 };
-
