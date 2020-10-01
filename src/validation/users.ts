@@ -9,7 +9,10 @@ const autosuggestParamsSchema = Joi.object({
 const userSchema = Joi.object({
     age: Joi.number().min(4).max(130).required(),
     login: Joi.string().required(),
-    password: Joi.string().alphanum().pattern(/[A-Za-z]/).pattern(/\d/).required()
+    password: Joi.string().alphanum()
+        .pattern(/[A-Za-z]/, 'must contain letters')
+        .pattern(/\d/, 'must contain digits')
+        .required()
 });
 
 export const validateAutosuggestParams = validateSchema(autosuggestParamsSchema, 'query');

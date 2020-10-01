@@ -2,7 +2,8 @@ import { Sequelize } from 'sequelize';
 
 export const sequelize = new Sequelize(process.env.DB_NAME, 'postgres', process.env.DB_PASSWORD, {
     host: 'localhost',
-    dialect: 'postgres'
+    dialect: 'postgres',
+    logging: false
 });
 
 export const initDB = async () => {
