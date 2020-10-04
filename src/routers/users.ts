@@ -8,8 +8,8 @@ export const userRouter = express.Router();
 userRouter.route('/:id')
     .delete(catchAsync(UserController.delete))
     .get(catchAsync(UserController.get))
-    .put(validateUser, catchAsync(UserController.put));
+    .put(validateUser, catchAsync(UserController.update));
 
 userRouter.route('/')
     .get(validateAutosuggestParams, catchAsync(UserController.autoSuggest))
-    .post(validateUser, catchAsync(UserController.post));
+    .post(validateUser, catchAsync(UserController.create));

@@ -5,14 +5,14 @@ import { GroupController } from '../controllers/groups';
 
 export const groupRouter = express.Router();
 
-groupRouter.put('/addUsers',
-    catchAsync(GroupController.addUsers));
+groupRouter.put('/actions/addUsers',
+    catchAsync(GroupController.addUsersToGroup));
 
 groupRouter.route('/:id')
     .delete(catchAsync(GroupController.delete))
     .get(catchAsync(GroupController.get))
-    .put(validateGroupUpdateParams, catchAsync(GroupController.put));
+    .put(validateGroupUpdateParams, catchAsync(GroupController.update));
 
 groupRouter.route('/')
     .get(catchAsync(GroupController.getAll))
-    .post(validateGroupCreationParams, catchAsync(GroupController.post));
+    .post(validateGroupCreationParams, catchAsync(GroupController.create));
