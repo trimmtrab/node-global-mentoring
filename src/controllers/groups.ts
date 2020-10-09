@@ -5,7 +5,7 @@ const populateLocalsWithLogInfo = createPopulateLocalsWithLogInfo('GroupService'
 
 class GroupControllerClass {
     @logMethodErrors
-    async addUsers(req, res, next) {
+    async addUsersToGroup(req, res, next) {
         const { groupId, userIds } = req.body;
         const areUsersAdded = await GroupService.addUsersToGroup(groupId, userIds);
 
@@ -13,8 +13,23 @@ class GroupControllerClass {
 
         if (!areUsersAdded) {
             res.sendStatus(400);
+        } else {
+            res.end();
         }
-        res.end();
+        next();
+    }
+
+    @logMethodErrors
+    async create(req, res, next) {
+        const newGroupId = await GroupService.create(req.body);
+
+        populateLocalsWithLogInfo('create', req.body, res);
+
+        if (!newGroupId) {
+            res.sendStatus(400);
+        } else {
+            res.status(201).send(newGroupId).end();
+        }
         next();
     }
 
@@ -27,9 +42,9 @@ class GroupControllerClass {
 
         if (!isGroupDeleted) {
             res.sendStatus(404);
+        } else {
+            res.end();
         }
-
-        res.end();
         next();
     }
 
@@ -42,9 +57,9 @@ class GroupControllerClass {
 
         if (!group) {
             res.sendStatus(404);
+        } else {
+            res.send(group).end();
         }
-
-        res.send(group).end();
         next();
     }
 
@@ -56,28 +71,14 @@ class GroupControllerClass {
 
         if (!groups) {
             res.sendStatus(400);
+        } else {
+            res.send(groups).end();
         }
-
-        res.send(groups).end();
         next();
     }
 
     @logMethodErrors
-    async post(req, res, next) {
-        const newGroupId = await GroupService.create(req.body);
-
-        populateLocalsWithLogInfo('create', req.body, res);
-
-        if (!newGroupId) {
-            res.sendStatus(400);
-        }
-
-        res.status(201).send(newGroupId).end();
-        next();
-    }
-
-    @logMethodErrors
-    async put(req, res, next) {
+    async update(req, res, next) {
         const { id } = req.params;
         const group = await GroupService.update(id, req.body);
 
@@ -85,9 +86,9 @@ class GroupControllerClass {
 
         if (!group) {
             res.sendStatus(404);
+        } else {
+            res.send(group).end();
         }
-
-        res.send(group).end();
         next();
     }
 }

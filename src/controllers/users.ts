@@ -50,7 +50,7 @@ class UserControllerClass {
     }
 
     @logMethodErrors
-    async post(req, res, next) {
+    async create(req, res, next) {
         const newUserId = await UserService.create(req.body);
 
         populateLocalsWithLogInfo('create', req.body, res);
@@ -64,7 +64,7 @@ class UserControllerClass {
     }
 
     @logMethodErrors
-    async put(req, res, next) {
+    async update(req, res, next) {
         const { id } = req.params;
         const user = await UserService.update(id, req.body);
 
