@@ -20,6 +20,20 @@ class UserControllerClass {
     }
 
     @logMethodErrors
+    async create(req, res, next) {
+        const newUserId = await UserService.create(req.body);
+
+        populateLocalsWithLogInfo('create', req.body, res);
+
+        if (newUserId) {
+            res.status(201).send(newUserId).end();
+        } else {
+            res.sendStatus(400);
+        }
+        next();
+    }
+
+    @logMethodErrors
     async delete(req, res, next) {
         const { id } = req.params;
         const isUserDeleted = await UserService.delete(id);
@@ -45,20 +59,6 @@ class UserControllerClass {
             res.send(user).end();
         } else {
             res.sendStatus(404);
-        }
-        next();
-    }
-
-    @logMethodErrors
-    async create(req, res, next) {
-        const newUserId = await UserService.create(req.body);
-
-        populateLocalsWithLogInfo('create', req.body, res);
-
-        if (newUserId) {
-            res.status(201).send(newUserId).end();
-        } else {
-            res.sendStatus(400);
         }
         next();
     }
